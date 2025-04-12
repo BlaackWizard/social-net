@@ -1,13 +1,16 @@
 from abc import abstractmethod
-from typing import Protocol, TypeAlias, Any
-import jwt
 from dataclasses import dataclass
+from typing import Any, Protocol, TypeAlias
+
+import jwt
 
 from src.auth.application.common.jwt.config import ConfigJWT
-from src.auth.application.errors.jwt_errors import JWTDecodeError, JWTExpiredError
+from src.auth.application.errors.jwt_errors import (JWTDecodeError,
+                                                    JWTExpiredError)
 
 JWTPayload: TypeAlias = dict[str, Any]
 JWTToken: TypeAlias = str
+
 
 class JWTProcessor(Protocol):
     @abstractmethod
@@ -18,6 +21,7 @@ class JWTProcessor(Protocol):
     def decode(self, token: JWTToken) -> JWTPayload:
         ...
 
+
 @dataclass
 class PyTokenProcessor(JWTProcessor):
     config: ConfigJWT
@@ -27,7 +31,11 @@ class PyTokenProcessor(JWTProcessor):
 
     def decode(self, token: JWTToken) -> JWTPayload:
         try:
-            payload = jwt.decode(token, self.config.key, algorithms=[self.config.algorithm])
+            payload = jwt.decode(
+                token,
+                self.config.key,
+                algorithms=[self.config.algorithm],
+            )
         except jwt.DecodeError:
             raise JWTDecodeError
         except jwt.ExpiredSignatureError as exc:

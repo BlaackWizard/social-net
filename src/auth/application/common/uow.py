@@ -1,14 +1,16 @@
 from abc import abstractmethod
-from typing import Protocol, Any
+from typing import Any, Protocol
 
 
 class UoW(Protocol):
     @abstractmethod
-    async def commit(self) -> None: ...
+    async def commit(self) -> None:
+        ...
 
     @abstractmethod
-    async def add(self, instance: Any) -> None: ...
+    async def add(self, instance: Any) -> None:
+        ...
 
     @abstractmethod
-    async def delete(self, instance: Any) -> None: ...
-
+    async def delete(self, instance: Any) -> None:
+        ...

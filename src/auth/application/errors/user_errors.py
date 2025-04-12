@@ -1,3 +1,5 @@
 from .common import ApplicationError
 
-class UserNotFoundError(ApplicationError): ...
+
+class UserNotFoundError(ApplicationError):
+    ...

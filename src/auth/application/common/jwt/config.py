@@ -1,5 +1,5 @@
-from typing import Literal
 from dataclasses import dataclass
+from typing import Literal
 
 Algorithm = Literal[
     'HS256',
@@ -7,8 +7,9 @@ Algorithm = Literal[
     'HS512',
     'RS256',
     'RS324',
-    'RS512'
+    'RS512',
 ]
+
 
 @dataclass(frozen=True)
 class ConfigJWT:

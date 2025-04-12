@@ -10,7 +10,6 @@ class DBConfig:
     postgres_port: int
     postgres_database: str
 
-
     @property
     def postgres_conn_url(self) -> str:
         user = self.postgres_username

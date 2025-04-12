@@ -1,4 +1,3 @@
-from src.auth.application.common.gateway.user import UserGateway
 from src.auth.application.common.id_provider import IdProvider
 from src.auth.application.common.uow import UoW
 from src.auth.application.dto.user import UserRegisterResponse
@@ -20,5 +19,5 @@ class DeleteUser:
         await self.uow.commit()
 
         return UserRegisterResponse(
-            message="Аккаунт удален."
+            message="Аккаунт удален.",
         )
