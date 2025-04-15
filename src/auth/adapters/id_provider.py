@@ -42,7 +42,7 @@ class TokenBearerIdProvider:
 class TokenProvider:
     _token_parser: TokenBearerIdProvider
     _user_gateway: UserGateway
-    uid: UUID | None = None
+    uid = None
 
     async def _authorize_user(self) -> UUID:
         return self._token_parser.get_user_uuid()

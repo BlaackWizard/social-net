@@ -43,14 +43,15 @@ class RegisterUser:
             raise UserNameIsOccupiedError
 
         hashed_password = self.password_hasher.hash_password(data.password2)
-
+        uid = uuid.uuid4()
         user = User(
             username=data.username,
             email=str(data.email),
             hashed_password=hashed_password,
+            user_id=uid,
         )
 
-        await self.uow.add(user)
+        self.uow.add(user)
 
         exp = datetime.now() + timedelta(hours=3)
         token_id = uuid.uuid4()
@@ -61,7 +62,7 @@ class RegisterUser:
                 token_id=token_id,
                 expires_in=exp,
             ),
-            user_email=user.email,
+            user_email=str(data.email),
         )
         await self.uow.commit()
         return UserRegisterResponse(

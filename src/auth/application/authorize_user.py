@@ -43,12 +43,13 @@ class AuthorizeUser:
         token_id = uuid.uuid4()
         exp = datetime.now() + timedelta(days=30)
 
-        access_token = self.token_processor.encode(
-            AccessTokenDTO(
+        dto = AccessTokenDTO(
                 uid=user.user_id,
                 token_id=token_id,
                 expires_in=exp,
-            ),
+            )
+        access_token = self.token_processor.encode(
+            dto.model_dump()
         )
 
         return TokenResponse(

@@ -10,7 +10,7 @@ from src.auth.application.errors.user_request import PasswordsNotMatchError
 
 @dataclass
 class Argon2PasswordHasher(PasswordHasher):
-    hasher: ArgonHasher
+    hasher = ArgonHasher()
 
     def hash_password(self, password: str) -> HASHED_PASSWORD:
         return self.hasher.hash(password)

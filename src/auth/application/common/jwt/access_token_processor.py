@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from datetime import datetime
 
 import jwt
@@ -11,16 +12,15 @@ from src.auth.application.errors.jwt_errors import (AccessTokenСorruptedError,
                                                     JWTDecodeError)
 
 
+@dataclass
 class AccessTokenProcessor(JWTProcessor):
     config: ConfigJWT
 
     def encode(self, data: JWTPayload) -> JWTToken:
         payload = {
-            'sub': {
-                'uid': data['uid'],
-                'token_id': data['token_id'],
-            },
-            'exp': str(data['expires_in']),
+            'exp': int(data['expires_in'].timestamp()),
+            'uid': str(data['uid']),
+            'token_id': str(data['token_id']),
         }
         return jwt.encode(payload, self.config.key, self.config.algorithm)
 
@@ -32,11 +32,10 @@ class AccessTokenProcessor(JWTProcessor):
                 algorithms=[self.config.algorithm],
             )
 
-            sub = payload['sub']
-            exp = datetime.strptime(payload['exp'], "%y/%m/%d/%h/%m")
+            exp = datetime.strptime(payload['exp'], "%y/%m/%d")
 
-            uid = sub['uid']
-            token_id = sub['token_id']
+            uid = payload['uid']
+            token_id = payload['token_id']
 
             dto = AccessTokenDTO(
                 expires_in=exp,

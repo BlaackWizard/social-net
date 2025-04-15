@@ -6,8 +6,9 @@ from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
-from src.auth.adapters.db.config_loader import Config
+from src.auth.adapters.config import Config
 from src.auth.models.base import Base
+from src.auth.models.user import User
 
 config = context.config
 

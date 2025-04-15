@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime
+from uuid import UUID
 
 import jwt
 
@@ -9,7 +10,7 @@ from src.auth.application.common.jwt.token_processor import (JWTPayload,
                                                              JWTToken)
 from src.auth.application.dto.user import UserConfirmationTokenDTO
 from src.auth.application.errors.jwt_errors import (
-    ConfirmationTokenСorruptedError, JWTDecodeError)
+    ConfirmationTokenСorruptedError)
 
 
 @dataclass
@@ -18,11 +19,9 @@ class ConfirmationTokenProcessor(JWTProcessor):
 
     def encode(self, data: JWTPayload) -> JWTToken:
         payload = {
-            'sub': {
-                'uid': data['uid'],
-                'token_id': data['token_id'],
-            },
-            'exp': str(data['expires_in']),
+            'exp': int(data['expires_in'].timestamp()),
+            'uid': str(data['uid']),
+            'token_id': str(data['token_id']),
         }
         return jwt.encode(payload, self.config.key, self.config.algorithm)
 
@@ -34,18 +33,15 @@ class ConfirmationTokenProcessor(JWTProcessor):
                 algorithms=[self.config.algorithm],
             )
 
-            sub = payload['sub']
-            exp = datetime.strptime(payload['exp'], "%y/%m/%d/%h/%m")
-
-            uid = sub['uid']
-            token_id = sub['token_id']
+            exp = datetime.fromtimestamp(payload['exp'])
 
             dto = UserConfirmationTokenDTO(
                 expires_in=exp,
-                uid=uid,
-                token_id=token_id,
+                uid=UUID(payload['uid']),
+                token_id=UUID(payload['token_id']),
             )
-        except (JWTDecodeError, TypeError, KeyError, ValueError):
+        except (jwt.DecodeError, TypeError, KeyError, ValueError):
             raise ConfirmationTokenСorruptedError
 
         return dto.model_dump()
+

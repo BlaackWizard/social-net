@@ -8,7 +8,7 @@ class UoW(Protocol):
         ...
 
     @abstractmethod
-    async def add(self, instance: Any) -> None:
+    def add(self, instance: Any) -> None:
         ...
 
     @abstractmethod

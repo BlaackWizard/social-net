@@ -2,8 +2,8 @@ from src.auth.application.common.gateway.user import UserGateway
 from src.auth.models.user import User
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from uuid import UUID
 from dataclasses import dataclass
+from uuid import UUID
 
 @dataclass
 class UserGatewayImpl(UserGateway):

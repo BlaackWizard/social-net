@@ -2,6 +2,7 @@ from datetime import datetime
 from uuid import UUID
 
 from pydantic import BaseModel, EmailStr, field_validator
+from pydantic_core.core_schema import ValidationInfo
 
 from src.auth.application.errors.user_request import PasswordsNotMatchError
 
@@ -17,11 +18,12 @@ class UserRegisterRequest(BaseModel):
     password1: str
     password2: str
 
-    @field_validator('password2')
-    def match_password(self, v, values):
-        if 'password1' not in values or v != values['password1']:
-            raise PasswordsNotMatchError
-
+    @field_validator("password2")
+    @classmethod
+    def passwords_match(cls, v: str, info: ValidationInfo) -> str:
+        if "password1" in info.data and v != info.data["password1"]:
+            raise ValueError("passwords do not match")
+        return v
 
 class UserAuthorizeRequest(BaseModel):
     email: EmailStr

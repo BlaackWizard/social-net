@@ -10,9 +10,8 @@ from src.auth.application.common.uow import UoW
 from src.auth.application.dto.user import AccessTokenDTO, TokenResponse
 from src.auth.application.errors.jwt_errors import (JWTDecodeError,
                                                     JWTExpiredError)
-from src.auth.application.errors.user_errors import UserNotFoundError
 from src.auth.application.errors.user_request import UnauthorizedError
-
+from uuid import UUID
 
 class VerifyUser:
     def __init__(
@@ -33,23 +32,24 @@ class VerifyUser:
         except (JWTDecodeError, JWTExpiredError, ValueError, TypeError, KeyError):
             raise UnauthorizedError
 
-        user = await self.user_gateway.get_by_id(data['user_id'])
+        user = await self.user_gateway.get_by_id(data['uid'])
 
         if not user:
-            raise UserNotFoundError
+            print(data['uid'])
 
         user.is_active = True
-        await self.uow.add(user)
+        self.uow.add(user)
 
         exp = datetime.now() + timedelta(days=30)
 
         token_id = uuid.uuid4()
-        access_token = self.access_token_processor.encode(
-            AccessTokenDTO(
+        dto = AccessTokenDTO(
                 uid=user.user_id,
                 expires_in=exp,
                 token_id=token_id,
-            ),
+            )
+        access_token = self.access_token_processor.encode(
+            dto.model_dump()
         )
         token = TokenResponse(
             access_token=access_token,

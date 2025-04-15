@@ -1,3 +1,4 @@
+import os
 from dataclasses import dataclass
 
 @dataclass
@@ -14,4 +15,3 @@ class ConfirmationEmailConfig:
     subject: str
     confirmation_link: str
     email_from: str
-
