@@ -5,7 +5,9 @@ from dataclasses import dataclass
 from src.auth.adapters.db.config_loader import DBConfig
 from src.auth.adapters.email_sender.config import ConfirmationEmailConfig, SMTPConfig
 from src.auth.application.common.jwt.config import ConfigJWT
+from pathlib import Path
 
+env_path = Path(__file__).parent.parent.parent.parent / ".env.auth"
 
 @dataclass(frozen=True)
 class Config:
@@ -16,7 +18,7 @@ class Config:
 
     @classmethod
     def load_from_environment(cls: type["Config"]) -> "Config":
-        load_dotenv()
+        load_dotenv(env_path)
 
         db = DBConfig(
             postgres_username=os.environ["POSTGRES_USERNAME"],

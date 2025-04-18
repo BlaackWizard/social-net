@@ -51,7 +51,7 @@ class TokenProvider:
         user_id = self.uid or await self._authorize_user()
 
         user = await self._user_gateway.get_by_id(user_id)
-        if not user:
+        if not user or user.is_active != True:
             raise UnauthorizedError
 
         return user
