@@ -32,3 +32,9 @@ typing-inspection==0.4.0
 typing_extensions==4.13.1
 uvicorn==0.34.0
 virtualenv==20.30.0
+
+cached-property==2.0.1
+inflection==0.5.1
+mypy-extensions==1.0.0
+sqlalchemy-orm==1.2.10
+
