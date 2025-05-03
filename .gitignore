@@ -129,6 +129,7 @@ celerybeat.pid
 
 # Environments
 .env.auth
+.env.db_config
 .env
 .venv
 env/

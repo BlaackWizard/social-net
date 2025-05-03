@@ -8,6 +8,7 @@ from src.auth.application.common.jwt.config import ConfigJWT
 from pathlib import Path
 
 env_path = Path(__file__).parent.parent.parent.parent / ".env.auth"
+db_env_path = Path(__file__).parent.parent.parent.parent / ".env.db_config"
 
 @dataclass(frozen=True)
 class Config:
@@ -19,13 +20,13 @@ class Config:
     @classmethod
     def load_from_environment(cls: type["Config"]) -> "Config":
         load_dotenv(env_path)
-
+        load_dotenv(db_env_path)
         db = DBConfig(
-            postgres_username=os.environ["POSTGRES_USERNAME"],
-            postgres_password=os.environ["POSTGRES_PASSWORD"],
-            postgres_host=os.environ["POSTGRES_HOST"],
-            postgres_port=int(os.environ["POSTGRES_PORT"]),
-            postgres_database=os.environ["POSTGRES_DATABASE"],
+            postgres_username=os.environ["AUTH_POSTGRES_USERNAME"],
+            postgres_password=os.environ["AUTH_POSTGRES_PASSWORD"],
+            postgres_host=os.environ["AUTH_POSTGRES_HOST"],
+            postgres_port=int(os.environ["AUTH_POSTGRES_PORT"]),
+            postgres_database=os.environ["AUTH_POSTGRES_DB"],
         )
         confirmation_email_config = ConfirmationEmailConfig(
             subject=os.environ.get('SUBJECT'),
