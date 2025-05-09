@@ -9,7 +9,7 @@ import sys
 import os
 
 
-from src.subscription.adapters.db.config_loader import DBConfig
+from src.subscription.adapters.db.config_loader import SubDBConfig
 from src.subscription.models.base import Base
 from src.subscription.models.subscription import SubscriptionModel
 
@@ -22,7 +22,7 @@ target_metadata = Base.metadata
 
 
 def get_url() -> str:
-    settings = DBConfig.from_env()
+    settings = SubDBConfig.from_env()
     url = settings.postgres_connection()
     return url
 

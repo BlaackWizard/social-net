@@ -9,8 +9,8 @@ from src.auth.application.common.jwt.token_processor import (JWTPayload,
                                                              JWTProcessor,
                                                              JWTToken)
 from src.auth.application.dto.user import UserConfirmationTokenDTO
-from src.auth.application.errors.jwt_errors import (
-    ConfirmationTokenСorruptedError)
+from src.auth.application.errors.jwt_errors import \
+    ConfirmationTokenСorruptedError
 
 
 @dataclass
@@ -44,4 +44,3 @@ class ConfirmationTokenProcessor(JWTProcessor):
             raise ConfirmationTokenСorruptedError
 
         return dto.model_dump()
-

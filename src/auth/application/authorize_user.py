@@ -44,12 +44,12 @@ class AuthorizeUser:
         exp = datetime.now() + timedelta(days=30)
 
         dto = AccessTokenDTO(
-                uid=user.user_id,
-                token_id=token_id,
-                expires_in=exp,
-            )
+            uid=user.user_id,
+            token_id=token_id,
+            expires_in=exp,
+        )
         access_token = self.token_processor.encode(
-            dto.model_dump()
+            dto.model_dump(),
         )
 
         return TokenResponse(

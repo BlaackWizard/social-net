@@ -1,4 +1,4 @@
-from .common import ApplicationError
+from src.auth.application.common.exceptions.base import ApplicationError
 
 
 class PasswordsNotMatchError(ApplicationError):

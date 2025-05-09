@@ -1,9 +1,12 @@
-from dishka import WithParents, Provider, Scope, provide_all
+from dishka import Provider, Scope, WithParents, provide_all
+
 from src.auth.adapters.gateway.user import UserGatewayImpl
 
-class GatewayProvider(Provider):
+
+class AuthGatewayProvider(Provider):
+    component = "auth"
     scope = Scope.REQUEST
 
     provides = provide_all(
-        WithParents[UserGatewayImpl]
+        WithParents[UserGatewayImpl],
     )

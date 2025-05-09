@@ -1,9 +1,12 @@
-from src.auth.application.common.gateway.user import UserGateway
-from src.auth.models.user import User
-from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
 from dataclasses import dataclass
 from uuid import UUID
+
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from src.auth.application.common.gateway.user import UserGateway
+from src.auth.models.user import User
+
 
 @dataclass
 class UserGatewayImpl(UserGateway):

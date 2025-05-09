@@ -4,6 +4,7 @@ from pathlib import Path
 
 import src.subscription.adapters.db.alembic
 
+
 def get_alembic_config_path() -> Iterator[Path]:
     source = files(src.subscription.adapters.db.alembic).joinpath("alembic.ini")
     with as_file(source) as path:

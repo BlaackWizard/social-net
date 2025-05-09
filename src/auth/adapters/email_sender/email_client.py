@@ -1,23 +1,5 @@
 from abc import abstractmethod
 from dataclasses import dataclass
-
-from src.auth.adapters.email_sender.config import SMTPConfig
-
-from email.message import Message
-from typing import Protocol
-from smtplib import SMTP
-
-from src.auth.application.errors.user_request import IncorrectEmailData
-
-
-@dataclass
-class EmailClient(Protocol):
-    @abstractmethod
-    def send(self, message: Message, email_to: str, email_from: str):
-        ...
-
-from abc import abstractmethod
-from dataclasses import dataclass
 from email.message import Message
 from smtplib import SMTP, SMTPAuthenticationError, SMTPException
 from typing import Protocol
@@ -29,7 +11,7 @@ from src.auth.application.errors.user_request import IncorrectEmailData
 @dataclass
 class EmailClient(Protocol):
     @abstractmethod
-    def send(self, message: Message, email_to: str, email_from: str) -> None:
+    def send(self, message: Message, email_to: str, email_from: str):
         ...
 
 

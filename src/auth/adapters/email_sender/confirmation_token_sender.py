@@ -1,10 +1,11 @@
 import logging
-from email.mime.text import MIMEText
 from dataclasses import dataclass
+from email.mime.text import MIMEText
 
 from src.auth.adapters.email_sender.config import ConfirmationEmailConfig
 from src.auth.adapters.email_sender.email_client import EmailClient
-from src.auth.application.common.jwt.confirmation_token_processor import ConfirmationTokenProcessor
+from src.auth.application.common.jwt.confirmation_token_processor import \
+    ConfirmationTokenProcessor
 from src.auth.application.common.token_sender import TokenSender
 from src.auth.application.dto.user import UserConfirmationTokenDTO
 
@@ -29,7 +30,11 @@ class ConfirmationTokenSender(TokenSender):
 
             logging.info(f"[SEND EMAIL] To: {user_email}, Link: {link}")
 
-            self.client.send(message, email_to=user_email, email_from=self.config.email_from)
+            self.client.send(
+                message,
+                email_to=user_email,
+                email_from=self.config.email_from,
+            )
 
             logging.info(f"[EMAIL SENT] Email успешно отправлен: {user_email}")
         except Exception as e:

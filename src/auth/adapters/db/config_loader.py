@@ -1,11 +1,8 @@
-import os
 from dataclasses import dataclass
-
-from src.auth.adapters.email_sender.config import ConfirmationEmailConfig, SMTPConfig
 
 
 @dataclass(frozen=True, slots=True)
-class DBConfig:
+class AuthDBConfig:
     postgres_username: str
     postgres_password: str
     postgres_host: str

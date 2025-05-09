@@ -7,9 +7,15 @@ from dishka.integrations.fastapi import setup_dishka
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
-from src.auth.adapters.config import Config
-from src.auth.bootstrap.di.container import get_async_container
 from src.auth.presentation.web.endpoints.user import router as auth_router
+from src.auth.presentation.web.register_exceptions import \
+    register_exceptions as auth_register_exceptions
+from src.entrypoint.container import get_container
+from src.subscription.presentation.web.endpoints import \
+    router as subscription_router
+from src.subscription.presentation.web.register_exceptions import \
+    register_exceptions as subscription_register_exceptions
+
 log_config = {
     "version": 1,
     "disable_existing_loggers": False,
@@ -30,10 +36,12 @@ log_config = {
     },
 }
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     yield
     await app.state.dishka_container.close()
+
 
 def run_api() -> None:
     app = FastAPI(
@@ -51,14 +59,17 @@ def run_api() -> None:
         allow_methods=["*"],
         allow_headers=["*"],
     )
-    config = Config.load_from_environment()
-    container = get_async_container(config)
+
+    container = get_container()
 
     setup_dishka(container=container, app=app)
 
-    logging.info("Fastapi app created.")
+    logging.info("FastAPI app created.")
 
     app.include_router(auth_router)
+    app.include_router(subscription_router)
+    subscription_register_exceptions(app)
+    auth_register_exceptions(app)
 
     uvicorn.run(
         app,
@@ -66,5 +77,7 @@ def run_api() -> None:
         host="localhost",
         log_config=log_config,
     )
+
+
 if __name__ == "__main__":
     run_api()

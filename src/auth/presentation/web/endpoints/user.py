@@ -1,47 +1,74 @@
 from typing import Annotated
 
-from dishka.integrations.fastapi import DishkaRoute, FromDishka
+from dishka import FromComponent
+from dishka.integrations.fastapi import DishkaRoute
 from fastapi import APIRouter
 from fastapi.params import Depends
-
-from src.auth.application.delete_user import DeleteUser
-from src.auth.application.dto.user import TokenResponse, UserRegisterResponse
-from src.auth.application.register_user import RegisterUser, UserRegisterRequest
-from src.auth.application.verify_user import VerifyUser
-from src.auth.application.authorize_user import UserAuthorizeRequest, AuthorizeUser
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+from starlette.responses import JSONResponse
+
+from src.auth.application.authorize_user import (AuthorizeUser,
+                                                 UserAuthorizeRequest)
+from src.auth.application.delete_user import DeleteUser
+from src.auth.application.dto.user import (TokenResponse, UserInfoResponse,
+                                           UserRegisterResponse)
+from src.auth.application.me import Me
+from src.auth.application.register_user import (RegisterUser,
+                                                UserRegisterRequest)
+from src.auth.application.verify_user import VerifyUser
 
 router = APIRouter(
     prefix='/auth',
     tags=['Авторизация и аутентификация'],
-    route_class=DishkaRoute
+    route_class=DishkaRoute,
 )
 
 
 @router.post('/register-user')
 async def register_user(
     schema: UserRegisterRequest,
-    interactor: FromDishka[RegisterUser]
+    interactor: Annotated[RegisterUser, FromComponent("auth")],
 ) -> UserRegisterResponse:
     return await interactor.execute(schema)
+
 
 @router.post('/verify-user/{token}')
 async def verify_user(
     token: str,
-    interactor: FromDishka[VerifyUser]
+    interactor: Annotated[VerifyUser, FromComponent("auth")],
 ) -> TokenResponse:
     return await interactor.execute(token)
+
 
 @router.post('/login-user')
 async def login_user(
     schema: UserAuthorizeRequest,
-    interactor: FromDishka[AuthorizeUser]
-) -> TokenResponse:
-    return await interactor.execute(schema)
+    interactor: Annotated[AuthorizeUser, FromComponent("auth")],
+) -> JSONResponse:
+    result = await interactor.execute(schema)
+
+    response = JSONResponse(content={"message": "ok"})
+    response.set_cookie(
+        key="access_token",
+        value=result.access_token,
+        httponly=True,
+        secure=True,
+        max_age=5000,
+    )
+    return response
+
 
 @router.delete('/delete-user')
 async def delete_user(
     _token: Annotated[HTTPAuthorizationCredentials, Depends(HTTPBearer)],
-    interactor: FromDishka[DeleteUser]
+    interactor: Annotated[DeleteUser, FromComponent("auth")],
 ) -> UserRegisterResponse:
+    return await interactor.execute()
+
+
+@router.get('/me')
+async def me(
+    _token: Annotated[HTTPAuthorizationCredentials, Depends(HTTPBearer)],
+    interactor: Annotated[Me, FromComponent("auth")],
+) -> UserInfoResponse:
     return await interactor.execute()

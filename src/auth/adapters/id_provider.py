@@ -21,15 +21,19 @@ class TokenBearerIdProvider:
 
     def get_user_uuid(self) -> UUID:
         auth_header = self.request.headers.get(AUTH_HEADER)
-        if not auth_header:
-            raise UnauthorizedError
+        token: str | None = None
 
-        parts = auth_header.split(" ")
-        if len(parts) != BEARER_SECTIONS:
-            raise UnauthorizedError
+        if auth_header:
+            parts = auth_header.split(" ")
+            if len(parts) == BEARER_SECTIONS:
+                token_type, token_value = parts
+                if token_type == TOKEN_TYPE:
+                    token = token_value
 
-        token_type, token = parts
-        if token_type != TOKEN_TYPE:
+        if token is None:
+            token = self.request.cookies.get("access_token")
+
+        if not token:
             raise UnauthorizedError
 
         try:
@@ -51,7 +55,8 @@ class TokenProvider:
         user_id = self.uid or await self._authorize_user()
 
         user = await self._user_gateway.get_by_id(user_id)
-        if not user or user.is_active != True:
+        if not user:
             raise UnauthorizedError
-
+        if user.is_active != True:
+            raise UnauthorizedError
         return user

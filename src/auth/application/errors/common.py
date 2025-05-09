@@ -1,6 +1,0 @@
-class ApplicationError(Exception):
-    ...
-
-
-class AccessDeniedError(Exception):
-    ...

@@ -4,8 +4,6 @@ from uuid import UUID
 from pydantic import BaseModel, EmailStr, field_validator
 from pydantic_core.core_schema import ValidationInfo
 
-from src.auth.application.errors.user_request import PasswordsNotMatchError
-
 
 class TokenResponse(BaseModel):
     uid: UUID
@@ -24,6 +22,7 @@ class UserRegisterRequest(BaseModel):
         if "password1" in info.data and v != info.data["password1"]:
             raise ValueError("passwords do not match")
         return v
+
 
 class UserAuthorizeRequest(BaseModel):
     email: EmailStr
@@ -50,3 +49,9 @@ class UserDTO(BaseModel):
     username: str
     email: str
     hashed_password: str
+
+
+class UserInfoResponse(BaseModel):
+    uid: UUID
+    username: str
+    email: str

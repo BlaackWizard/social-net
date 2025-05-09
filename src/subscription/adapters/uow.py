@@ -1,7 +1,7 @@
+from dataclasses import dataclass
 from typing import Any
 
 from sqlalchemy.ext.asyncio import AsyncSession
-from dataclasses import dataclass
 
 from src.subscription.application.common.uow import UoW
 

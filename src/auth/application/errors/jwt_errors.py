@@ -1,4 +1,4 @@
-from .common import AccessDeniedError
+from src.auth.application.common.exceptions.base import AccessDeniedError
 
 
 class JWTError(AccessDeniedError):
