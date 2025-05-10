@@ -9,10 +9,17 @@ from src.subscription.application.exceptions.subscription import (
     FollowSelfForbidden, NotFoundUserError, SubscriptionAlreadyExists)
 from src.subscription.models.subscription import SubscriptionModel
 
+@dataclass
+class SubscriptionRequest():
+    user_id: UUID
+@dataclass
+class FollowRequest(SubscriptionRequest): ...
 
 @dataclass
-class FollowRequest:
-    user_id: UUID
+class UnFollowRequest(SubscriptionRequest): ...
+
+@dataclass
+class AllFollowersRequest(SubscriptionRequest): ...
 
 
 @dataclass(frozen=True, slots=True)

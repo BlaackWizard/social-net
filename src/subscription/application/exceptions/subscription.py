@@ -15,3 +15,6 @@ class AccessTokenOccurredError(SubscriptionException):
 
 class FollowSelfForbidden(SubscriptionException):
     ...
+
+class SubscriptionNotExistsError(SubscriptionException):
+    ...

@@ -27,3 +27,13 @@ class SubscriptionGatewayImpl(SubscriptionGateway):
         if result:
             return result.scalar()
         return None
+
+    async def get_all_followers_by_user_uuid(self, user_id: UUID) -> list[UUID]:
+        q = select(SubscriptionModel.follower_id).where(
+            SubscriptionModel.user_id == user_id
+        )
+
+        result = await self.session.execute(q)
+
+        return list(result.scalars().all())
+

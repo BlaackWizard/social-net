@@ -1,10 +1,13 @@
 from typing import Annotated
+from uuid import UUID
 
 from dishka import FromComponent
 from dishka.integrations.fastapi import DishkaRoute
 from fastapi import APIRouter
 
-from src.subscription.application.follow import Follow, FollowRequest
+from src.subscription.application.all_followers import AllFollowers
+from src.subscription.application.follow import Follow, FollowRequest, UnFollowRequest, AllFollowersRequest
+from src.subscription.application.unfollow import UnFollow
 
 router = APIRouter(
     prefix='/subscriptions',
@@ -19,3 +22,17 @@ async def follow_user(
     data: FollowRequest,
 ) -> None:
     await interactor.execute(data)
+
+@router.post('/unfollow')
+async def unfollow_user(
+    interactor: Annotated[UnFollow, FromComponent("subscription")],
+    data: UnFollowRequest
+) -> None:
+    await interactor.execute(data)
+
+@router.get('/all-followers')
+async def get_all_followers(
+    interactor: Annotated[AllFollowers, FromComponent("subscription")],
+    data: AllFollowersRequest,
+) -> list[UUID]:
+    return await interactor.execute(data)

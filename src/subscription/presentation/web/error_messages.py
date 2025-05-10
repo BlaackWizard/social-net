@@ -1,6 +1,6 @@
 from src.subscription.application.exceptions.subscription import (
     AccessTokenOccurredError, FollowSelfForbidden, NotFoundUserError,
-    SubscriptionAlreadyExists)
+    SubscriptionAlreadyExists, SubscriptionNotExistsError)
 
 
 def exception_messages() -> dict:
@@ -9,4 +9,5 @@ def exception_messages() -> dict:
         AccessTokenOccurredError: "Токен поврежден",
         SubscriptionAlreadyExists: "Вы уже подписаны на этого пользователя",
         FollowSelfForbidden: "Запрещено подписываться на себя",
+        SubscriptionNotExistsError: "Вы не подписаны на данный аккаунт!",
     }

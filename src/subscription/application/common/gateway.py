@@ -13,3 +13,7 @@ class SubscriptionGateway(Protocol):
         user_id: UUID,
     ) -> SubscriptionModel | None:
         ...
+
+    @abstractmethod
+    async def get_all_followers_by_user_uuid(self, user_id: UUID) -> list[UUID]: ...
+
