@@ -1,5 +1,6 @@
 import logging
 from dataclasses import dataclass
+from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 from src.auth.adapters.email_sender.config import ConfirmationEmailConfig
@@ -22,12 +23,21 @@ class ConfirmationTokenSender(TokenSender):
 
             link = self.config.confirmation_link + jwt_token
 
-            text = f"Перейдите по ссылке, чтобы подтвердить свою почту: {link}"
-            message = MIMEText(text)
+            message = MIMEMultipart('alternative')
             message['Subject'] = self.config.subject
             message['From'] = self.config.email_from
             message['To'] = user_email
 
+            html = f"""
+                <html>
+                    <body>
+                        <h1>Подтверждение аккаунта</h1>
+                        <h3>Чтобы подтвердить ваш аккаунт, перейдите по этой <a href="{link}">ссылке</a></h3>
+                    </body>
+                </html>
+            """
+            part = MIMEText(html, "html")
+            message.attach(part)
             logging.info(f"[SEND EMAIL] To: {user_email}, Link: {link}")
 
             self.client.send(

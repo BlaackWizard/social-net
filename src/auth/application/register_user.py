@@ -36,7 +36,7 @@ class RegisterUser:
             data.username,
         )
 
-        if user_email and user_email.is_active == True:
+        if user_email:
             raise UserAlreadyExistsWithThisEmailError
 
         if user_username:
