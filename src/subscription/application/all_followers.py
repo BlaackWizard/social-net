@@ -4,8 +4,8 @@ from src.shared_services.interfaces.gateway.user import SharedUserGateway
 from src.subscription.application.common.gateway import SubscriptionGateway
 from uuid import UUID
 
+from src.subscription.application.dto import AllFollowersRequest
 from src.subscription.application.exceptions.subscription import NotFoundUserError
-from src.subscription.application.follow import AllFollowersRequest
 
 
 @dataclass

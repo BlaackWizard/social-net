@@ -5,21 +5,10 @@ from src.shared_services.interfaces.gateway.user import SharedUserGateway
 from src.subscription.application.common.gateway import SubscriptionGateway
 from src.subscription.application.common.id_provider import IdProvider
 from src.subscription.application.common.uow import UoW
+from src.subscription.application.dto import FollowRequest
 from src.subscription.application.exceptions.subscription import (
     FollowSelfForbidden, NotFoundUserError, SubscriptionAlreadyExists)
 from src.subscription.models.subscription import SubscriptionModel
-
-@dataclass
-class SubscriptionRequest():
-    user_id: UUID
-@dataclass
-class FollowRequest(SubscriptionRequest): ...
-
-@dataclass
-class UnFollowRequest(SubscriptionRequest): ...
-
-@dataclass
-class AllFollowersRequest(SubscriptionRequest): ...
 
 
 @dataclass(frozen=True, slots=True)

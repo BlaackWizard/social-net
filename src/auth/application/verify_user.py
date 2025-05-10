@@ -9,7 +9,7 @@ from src.auth.application.common.jwt.confirmation_token_processor import \
 from src.auth.application.common.uow import UoW
 from src.auth.application.dto.user import AccessTokenDTO, TokenResponse
 from src.auth.application.errors.jwt_errors import (JWTDecodeError,
-                                                    JWTExpiredError, ConfirmationTokenExpiredError)
+                                                    JWTExpiredError)
 from src.auth.application.errors.user_errors import UserNotFoundError
 from src.auth.application.errors.user_request import UnauthorizedError
 

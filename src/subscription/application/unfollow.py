@@ -6,8 +6,8 @@ from src.subscription.application.common.id_provider import IdProvider
 from uuid import UUID
 
 from src.subscription.application.common.uow import UoW
+from src.subscription.application.dto import UnFollowRequest
 from src.subscription.application.exceptions.subscription import NotFoundUserError, SubscriptionNotExistsError
-from src.subscription.application.follow import UnFollowRequest
 
 
 @dataclass

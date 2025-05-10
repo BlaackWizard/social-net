@@ -6,7 +6,8 @@ from dishka.integrations.fastapi import DishkaRoute
 from fastapi import APIRouter
 
 from src.subscription.application.all_followers import AllFollowers
-from src.subscription.application.follow import Follow, FollowRequest, UnFollowRequest, AllFollowersRequest
+from src.subscription.application.dto import FollowRequest, UnFollowRequest, AllFollowersRequest
+from src.subscription.application.follow import Follow
 from src.subscription.application.unfollow import UnFollow
 
 router = APIRouter(
