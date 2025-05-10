@@ -1,5 +1,5 @@
 from src.auth.application.errors.jwt_errors import \
-    ConfirmationTokenСorruptedError
+    ConfirmationTokenСorruptedError, ConfirmationTokenExpiredError
 from src.auth.application.errors.user_errors import UserNotFoundError
 from src.auth.application.errors.user_request import (
     IncorrectEmailData, InvalidPasswordError, PasswordsNotMatchError,
@@ -17,4 +17,5 @@ def get_error_messages() -> dict:
         UserAlreadyExistsWithThisEmailError: "Аккаунт с такой почтой уже существует!",
         PasswordsNotMatchError: "Пароли не совпадают",
         UnauthorizedError: "Вы не авторизованы.",
+        ConfirmationTokenExpiredError: "Срок подтверждения токена истëк."
     }

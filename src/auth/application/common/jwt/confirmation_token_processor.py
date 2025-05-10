@@ -10,7 +10,7 @@ from src.auth.application.common.jwt.token_processor import (JWTPayload,
                                                              JWTToken)
 from src.auth.application.dto.user import UserConfirmationTokenDTO
 from src.auth.application.errors.jwt_errors import \
-    ConfirmationTokenСorruptedError
+    ConfirmationTokenСorruptedError, ConfirmationTokenExpiredError
 
 
 @dataclass
@@ -43,4 +43,6 @@ class ConfirmationTokenProcessor(JWTProcessor):
         except (jwt.DecodeError, TypeError, KeyError, ValueError):
             raise ConfirmationTokenСorruptedError
 
+        except jwt.ExpiredSignatureError:
+            raise ConfirmationTokenExpiredError
         return dto.model_dump()

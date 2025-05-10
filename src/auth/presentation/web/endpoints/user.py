@@ -36,9 +36,17 @@ async def register_user(
 async def verify_user(
     token: str,
     interactor: Annotated[VerifyUser, FromComponent("auth")],
-) -> TokenResponse:
-    return await interactor.execute(token)
-
+) -> JSONResponse:
+    result = await interactor.execute(token)
+    response = JSONResponse(content={"message": "Вы успешно подтвердили свой аккаунт!"})
+    response.set_cookie(
+        key="access_token",
+        value=result.access_token,
+        httponly=True,
+        secure=True,
+        max_age=2592000,
+    )
+    return response
 
 @router.post('/login-user')
 async def login_user(
@@ -47,13 +55,13 @@ async def login_user(
 ) -> JSONResponse:
     result = await interactor.execute(schema)
 
-    response = JSONResponse(content={"message": "ok"})
+    response = JSONResponse(content={"message": "Вы успешно вошли в свой аккаунт!"})
     response.set_cookie(
         key="access_token",
         value=result.access_token,
         httponly=True,
         secure=True,
-        max_age=5000,
+        max_age=2592000,
     )
     return response
 

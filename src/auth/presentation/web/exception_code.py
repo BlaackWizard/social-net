@@ -1,7 +1,7 @@
 from fastapi import status
 
 from src.auth.application.errors.jwt_errors import \
-    ConfirmationTokenСorruptedError
+    ConfirmationTokenСorruptedError, ConfirmationTokenExpiredError
 from src.auth.application.errors.user_errors import UserNotFoundError
 from src.auth.application.errors.user_request import (
     IncorrectEmailData, InvalidPasswordError, PasswordsNotMatchError,
@@ -19,4 +19,5 @@ def get_error_codes() -> dict:
         UserAlreadyExistsWithThisEmailError: status.HTTP_400_BAD_REQUEST,
         PasswordsNotMatchError: status.HTTP_400_BAD_REQUEST,
         UnauthorizedError: status.HTTP_400_BAD_REQUEST,
+        ConfirmationTokenExpiredError: status.HTTP_401_UNAUTHORIZED
     }

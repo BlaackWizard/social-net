@@ -31,15 +31,15 @@ class RegisterUser:
         self.uow = uow
 
     async def execute(self, data: UserRegisterRequest) -> UserRegisterResponse:
-        check_exists_by_email = await self.user_gateway.get_by_email(str(data.email))
-        check_exists_by_username = await self.user_gateway.get_by_username(
+        user_email = await self.user_gateway.get_by_email(str(data.email))
+        user_username = await self.user_gateway.get_by_username(
             data.username,
         )
 
-        if check_exists_by_email:
+        if user_email and user_email.is_active == True:
             raise UserAlreadyExistsWithThisEmailError
 
-        if check_exists_by_username:
+        if user_username:
             raise UserNameIsOccupiedError
 
         hashed_password = self.password_hasher.hash_password(data.password2)
@@ -66,5 +66,6 @@ class RegisterUser:
         )
         await self.uow.commit()
         return UserRegisterResponse(
-            message=f"Подтвердите свою почту: {data.email}, мы выслали вам на почту письмо",
+            message=f"Подтвердите свою почту: {data.email}, мы выслали вам на почту письмо."
+                    f"Срок подтверждения 3 часа.",
         )
