@@ -19,6 +19,7 @@ router = APIRouter(
 
 @router.post("/follow")
 async def follow_user(
+
     interactor: Annotated[Follow, FromComponent("subscription")],
     data: FollowRequest,
 ) -> None:
