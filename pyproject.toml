@@ -103,8 +103,8 @@ warn_no_return = true
 files = ["src/", "tests/"]
 
 [[project.authors]]
-name = 'lubaskinc0de'
-email = 'lubaskincorporation@gmail.com'
+name = 'BlaackWizard'
+email = 'kabynks@gmail.com'
 
 [tool.ruff]
 line-length = 100
