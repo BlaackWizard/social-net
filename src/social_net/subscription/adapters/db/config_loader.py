@@ -5,9 +5,8 @@ from typing import Dict, Any, Self
 
 from dotenv import load_dotenv
 
-env_path = Path(__file__).resolve().parents[4] / ".env.db_config"
+env_path = Path(__file__).resolve().parents[5] / ".env.db_config"
 load_dotenv(dotenv_path=env_path)
-
 
 @dataclass(frozen=True, slots=True)
 class SubDBConfig:
@@ -19,6 +18,7 @@ class SubDBConfig:
 
     @staticmethod
     def load_data() -> Dict[str, Any]:
+
         return dict(
             postgres_username=os.environ['SUBSCRIPTION_POSTGRES_USERNAME'],
             postgres_password=os.environ['SUBSCRIPTION_POSTGRES_PASSWORD'],

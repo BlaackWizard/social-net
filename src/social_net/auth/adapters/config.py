@@ -9,8 +9,8 @@ from social_net.auth.adapters.email_sender.config import (ConfirmationEmailConfi
                                                    SMTPConfig)
 from social_net.auth.application.common.jwt.config import ConfigJWT
 
-env_path = Path(__file__).parent.parent.parent.parent / ".env.auth"
-db_env_path = Path(__file__).parent.parent.parent.parent / ".env.db_config"
+env_path = Path(__file__).parent.parent.parent.parent.parent / ".env.auth"
+db_env_path = Path(__file__).parent.parent.parent.parent.parent / ".env.db_config"
 
 
 @dataclass(frozen=True)
